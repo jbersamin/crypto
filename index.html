@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Crypto JS</h1>
+    <input
+      id="data_to_encrypt"
+      name="data_to_encrypt"
+      placeholder="Data to encrypt"
+    />
+    <input id="secret_key" name="secret_key" placeholder="Your secret key" />
+    <div>
+      <span id="data_encrypted"></span>
+    </div>
+    <div>
+      <span id="secret_key_generated"></span>
+    </div>
+    <pre></pre>
+    <button id="btnGenerate">Generate</button>
+    <button id="btnDecrypt">Decrypt It</button>
+    <div>
+      <span id="decrpyted_text"></span>
+    </div>
+    <script src="crypto.js"></script>
+    <script>
+      // 0123456789ABCDEF0123456789ABCDEF
+      const ENCRYPTION_KEY_HEX = "0123456789ABCDEF0123456789ABCDEF";
+
+      var btnGenerate = document.getElementById("btnGenerate");
+      var btnDecrypt = document.getElementById("btnDecrypt");
+
+      const secretKeyHtml = document.getElementById("secret_key_generated");
+      const dataEncryptedHtml = document.getElementById("data_encrypted");
+      const decrpytedTextHtml = document.getElementById("decrpyted_text");
+
+      const dataToEncryptText = document.getElementById("data_to_encrypt");
+      const secretKeyText = document.getElementById("secret_key");
+
+      let dataValue = null;
+      let ivValue = null;
+
+      btnGenerate.addEventListener("click", function () {
+        generateKey(
+          dataToEncryptText.value,
+          secretKeyText.value,
+          ENCRYPTION_KEY_HEX
+        ).then(function (encryptedData) {
+          dataEncryptedHtml.innerHTML = "EncryptedData: " + encryptedData.data;
+          secretKeyHtml.innerHTML = "IvData: " + encryptedData.iv;
+          dataValue = encryptedData.data;
+          ivValue = encryptedData.iv;
+        });
+      });
+
+      btnDecrypt.addEventListener("click", function () {
+        generateDecrypt(dataValue, ivValue, ENCRYPTION_KEY_HEX).then(function (
+          data
+        ) {
+          decrpytedTextHtml.innerHTML = data;
+        });
+      });
+    </script>
+  </body>
+</html>
